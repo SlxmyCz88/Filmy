@@ -6,16 +6,17 @@
     <title>Moje Filmy a Seriály</title>
     <style>
         :root {
-            --panel-bg: rgba(255, 255, 255, 0.85);
+            /* Změna pozadí panelů na průhlednou černou */
+            --panel-bg: rgba(0, 0, 0, 0.85);
             --card-bg: rgba(255, 255, 255, 0.95);
-            --text-color: #2c3e50;
+            --text-color: #ffffff; /* Text v panelu bude bílledobře čitelný na černé */
             --accent-color: #34495e;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            color: var(--text-color);
+            color: #2c3e50;
             background-color: #1a1a1a;
             background-size: cover;
             background-position: center;
@@ -59,7 +60,7 @@
             width: 320px;
             background: var(--panel-bg);
             backdrop-filter: blur(15px);
-            box-shadow: 4px 0 25px rgba(0,0,0,0.2);
+            box-shadow: 4px 0 25px rgba(0,0,0,0.5);
             padding: 25px;
             display: flex;
             flex-direction: column;
@@ -71,13 +72,7 @@
             box-sizing: border-box;
             overflow-y: auto;
             z-index: 900;
-        }
-        .sidebar h1 {
-            font-size: 22px;
-            margin: 0 0 5px 0;
-            text-align: center;
-            border-bottom: 2px solid rgba(0,0,0,0.1);
-            padding-bottom: 10px;
+            color: var(--text-color);
         }
 
         /* HLAVNÍ OBSAH */
@@ -86,15 +81,41 @@
             flex-grow: 1;
             padding: 40px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
+        .top-filter-bar {
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+        .sub-filter-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .sub-filter-btn:hover { background: rgba(255, 255, 255, 0.4); }
+        .sub-filter-btn.active { background: white; color: #1a1a1a; }
+
+        /* Černé pozadí pro vnitřní boxy */
         .section-box {
-            background: rgba(255,255,255,0.4);
+            background: rgba(0, 0, 0, 0.6);
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        h3 { margin-top: 0; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
+        h3 { margin-top: 0; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #bbb; }
         
         .form-flex {
             display: flex;
@@ -104,12 +125,15 @@
         input, select, button, textarea {
             padding: 9px;
             font-size: 14px;
-            border: 1px solid #ccc;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
             border-radius: 6px;
             box-sizing: border-box;
             width: 100%;
             font-family: inherit;
         }
+        input::placeholder, textarea::placeholder { color: #888; }
         textarea { resize: vertical; min-height: 50px; }
         
         button.primary-btn {
@@ -133,8 +157,8 @@
             gap: 4px;
         }
         .filter-btn {
-            background: rgba(0,0,0,0.04);
-            color: #333;
+            background: rgba(255,255,255,0.05);
+            color: #eee;
             border: none;
             padding: 8px 12px;
             font-size: 13px;
@@ -143,13 +167,26 @@
             text-align: left;
             transition: all 0.2s;
             font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .filter-btn:hover { background: rgba(0,0,0,0.08); }
+        .filter-btn:hover { background: rgba(255,255,255,0.15); }
         .filter-btn.active { background: #3498db; color: white; }
+        .list-count {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+        .filter-btn.active .list-count { background: rgba(255, 255, 255, 0.3); }
 
         .list-manager-form { display: flex; gap: 5px; }
         .list-manager-form input { flex: 1; padding: 6px; }
-        .list-manager-form button { width: auto; background: var(--accent-color); color: white; border: none; cursor: pointer; padding: 6px 12px; }
+        .list-manager-form button { width: auto; background: #444; color: white; border: none; cursor: pointer; padding: 6px 12px; }
+        .list-manager-form button:hover { background: #555; }
 
         /* GRID KARTIČEK */
         .grid-layout {
@@ -161,7 +198,7 @@
             background: var(--card-bg);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
             position: relative;
@@ -169,17 +206,17 @@
         }
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
         
-        /* BUBLINA S POZNÁMKOU PŘI NAJETÍ MYŠI */
+        /* BUBLINA S POZNÁMKOU */
         .card-tooltip {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 250px; /* Stejná výška jako cover */
-            background: rgba(0, 0, 0, 0.85);
+            height: 250px;
+            background: rgba(0, 0, 0, 0.95);
             color: #fff;
             padding: 15px;
             box-sizing: border-box;
@@ -190,15 +227,20 @@
             z-index: 10;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
             overflow-y: auto;
             word-break: break-word;
+            line-height: 1.4;
         }
-        /* Zobrazení bubliny při najetí na celou kartu */
         .card:hover .card-tooltip {
             opacity: 1;
+            pointer-events: auto; 
         }
+
+        .card-tooltip::-webkit-scrollbar { width: 6px; }
+        .card-tooltip::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        .card-tooltip::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 4px; }
 
         .cover-container {
             width: 100%;
@@ -242,13 +284,25 @@
         .type-serial { background: #9b59b6; }
         .type-film { background: #3498db; }
         
+        .note-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 2;
+        }
+
         .card-info {
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             justify-content: space-between;
-            gap: 10px;
+            gap: 6px;
             background: white;
             z-index: 5;
         }
@@ -256,293 +310,16 @@
             margin: 0;
             font-size: 15px;
             font-weight: 600;
+            color: #2c3e50;
             word-break: break-word;
-            line-height: 1.3;
+            line-height: 1.2;
         }
-        .card-tag {
-            align-self: flex-start;
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: #e1e8ed;
-            color: #555;
+        
+        .card-rating-badge {
+            font-size: 13px;
             font-weight: bold;
+            margin: 2px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
-        .card-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-        .card-delete {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .card-delete:hover { background: #c0392b; }
-    </style>
-</head>
-<body>
-
-<div class="bg-control">
-    <label for="bgInput" class="bg-btn" title="Změnit pozadí">⛤</label>
-    <input type="file" id="bgInput" accept="image/*" onchange="changeBackground(event)">
-</div>
-
-<div class="sidebar">
-    <h1>KinoKnihovna</h1>
-
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔎 Hledat název..." oninput="renderList()">
-        <button class="sort-btn" id="sortBtn" onclick="toggleSort()">🔤 Seřadit: Výchozí</button>
-    </div>
-
-    <div class="section-box">
-        <h3>➕ Přidat kousek</h3>
-        <form id="mediaForm" class="form-flex">
-            <input type="text" id="title" placeholder="Název filmu / seriálu" required>
-            
-            <select id="type">
-                <option value="film">🎬 Film</option>
-                <option value="serial">📺 Seriál</option>
-            </select>
-            
-            <select id="status">
-                </select>
-            
-            <textarea id="note" placeholder="Tvoje poznámka k filmu... (zobrazí se při najetí myši)"></textarea>
-            
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-                <label style="font-size: 11px; color: #666;">Obal (z PC nebo URL odkaz):</label>
-                <input type="file" id="coverFileInput" accept="image/*" style="font-size: 11px; padding: 4px;">
-                <input type="url" id="coverUrlInput" placeholder="http://... (URL obrázku)" style="padding: 5px; font-size: 11px;">
-            </div>
-            
-            <button type="submit" class="primary-btn">Uložit</button>
-        </form>
-    </div>
-
-    <div class="section-box">
-        <h3>📁 Nová záložka</h3>
-        <div class="list-manager-form">
-            <input type="text" id="newListName" placeholder="Název nového seznamu...">
-            <button type="button" onclick="createNewList()">+</button>
-        </div>
-    </div>
-
-    <div class="section-box" style="flex-grow: 1; display: flex; flex-direction: column;">
-        <h3>📌 Moje záložky</h3>
-        <div class="filter-list" id="filterContainer">
-            </div>
-    </div>
-</div>
-
-<div class="main-content">
-    <div id="gridList" class="grid-layout"></div>
-</div>
-
-<script>
-    // Přesné výchozí pořadí seznamů podle tvého přání
-    const defaultLists = [
-        'Chci Vidět (Filmy)',
-        'Chci Vidět (Seriály)',
-        'Oblíbené Filmy',
-        'Oblíbené Seriály',
-        'Top 20 Filmů',
-        'Top 20 Seriálů',
-        'Top 10 Nejhorších Filmů',
-        'Top 10 Nejhorších Seriálů'
-    ];
-
-    let library = JSON.parse(localStorage.getItem('cinemaLibrary')) || [];
-    let customLists = JSON.parse(localStorage.getItem('cinemaLists')) || defaultLists;
-    let currentFilter = 'vse';
-    let isSortedAZ = false;
-
-    if (localStorage.getItem('customBg')) {
-        document.body.style.backgroundImage = `url('${localStorage.getItem('customBg')}')`;
-    }
-
-    function changeBackground(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Image = e.target.result;
-                document.body.style.backgroundImage = `url('${base64Image}')`;
-                localStorage.setItem('customBg', base64Image);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function createNewList() {
-        const input = document.getElementById('newListName');
-        const listName = input.value.trim();
-        if (listName && !customLists.includes(listName)) {
-            customLists.push(listName);
-            localStorage.setItem('cinemaLists', JSON.stringify(customLists));
-            input.value = '';
-            updateSelectorsAndFilters();
-            renderList();
-        }
-    }
-
-    function updateSelectorsAndFilters() {
-        const statusSelect = document.getElementById('status');
-        statusSelect.innerHTML = '';
-        customLists.forEach(list => {
-            const opt = document.createElement('option');
-            opt.value = list;
-            opt.textContent = list;
-            statusSelect.appendChild(opt);
-        });
-
-        const filterContainer = document.getElementById('filterContainer');
-        filterContainer.innerHTML = '';
-        
-        const btnAll = document.createElement('button');
-        btnAll.className = `filter-btn ${currentFilter === 'vse' ? 'active' : ''}`;
-        btnAll.textContent = '🌍 Všechno dohromady';
-        btnAll.onclick = function() { changeFilter('vse', btnAll); };
-        filterContainer.appendChild(btnAll);
-
-        customLists.forEach(list => {
-            const btn = document.createElement('button');
-            btn.className = `filter-btn ${currentFilter === list ? 'active' : ''}`;
-            btn.textContent = `• ${list}`;
-            btn.onclick = function() { changeFilter(list, btn); };
-            filterContainer.appendChild(btn);
-        });
-    }
-
-    function changeFilter(status, button) {
-        currentFilter = status;
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        renderList();
-    }
-
-    function toggleSort() {
-        isSortedAZ = !isSortedAZ;
-        document.getElementById('sortBtn').textContent = isSortedAZ ? '🔤 Seřadit: A-Z' : '🔤 Seřadit: Výchozí';
-        renderList();
-    }
-
-    const form = document.getElementById('mediaForm');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const title = document.getElementById('title').value;
-        const type = document.getElementById('type').value;
-        const status = document.getElementById('status').value;
-        const note = document.getElementById('note').value;
-        const coverUrl = document.getElementById('coverUrlInput').value;
-        const coverFile = document.getElementById('coverFileInput').files[0];
-
-        const newItem = {
-            id: Date.now(),
-            title: title,
-            type: type,
-            status: status,
-            note: note || "Žádná poznámka nebyla zadána.",
-            cover: coverUrl || null
-        };
-
-        if (coverFile) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                newItem.cover = e.target.result;
-                library.push(newItem);
-                saveAndRender();
-            };
-            reader.readAsDataURL(coverFile);
-        } else {
-            library.push(newItem);
-            saveAndRender();
-        }
-
-        form.reset();
-        updateSelectorsAndFilters();
-    });
-
-    function saveAndRender() {
-        localStorage.setItem('cinemaLibrary', JSON.stringify(library));
-        renderList();
-    }
-
-    function deleteItem(id) {
-        if(confirm("Smazat ze seznamu?")) {
-            library = library.filter(item => item.id !== id);
-            saveAndRender();
-        }
-    }
-
-    function getRandomColor(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
-        return "#" + "00000".substring(0, 6 - c.length) + c;
-    }
-
-    function renderList() {
-        const grid = document.getElementById('gridList');
-        grid.innerHTML = '';
-        
-        const searchWord = document.getElementById('searchInput').value.toLowerCase();
-        
-        let itemsToShow = library.filter(item => {
-            const matchesFilter = (currentFilter === 'vse' || item.status === currentFilter);
-            const matchesSearch = item.title.toLowerCase().includes(searchWord);
-            return matchesFilter && matchesSearch;
-        });
-
-        if (isSortedAZ) {
-            itemsToShow.sort((a, b) => a.title.localeCompare(b.title, 'cs'));
-        }
-
-        itemsToShow.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            
-            let coverHtml = '';
-            if (item.cover) {
-                coverHtml = `<img src="${item.cover}" class="cover-img" alt="${item.title}">`;
-            } else {
-                const color = getRandomColor(item.title);
-                const firstLetter = item.title.charAt(0);
-                coverHtml = `<div class="cover-placeholder" style="background-color: ${color};">${firstLetter}</div>`;
-            }
-
-            card.innerHTML = `
-                <div class="card-tooltip">
-                    <strong>Poznámka:</strong><br>${item.note}
-                </div>
-                
-                <div class="cover-container">
-                    <span class="card-type type-${item.type}">${item.type === 'film' ? '🎬 Film' : '📺 Seriál'}</span>
-                    ${coverHtml}
-                </div>
-                
-                <div class="card-info">
-                    <h4 class="card-title">${item.title}</h4>
-                    <span class="card-tag">${item.status}</span>
-                    <div class="card-actions">
-                        <button class="card-delete" onclick="deleteItem(${item.id})">Smazat</button>
-                    </div>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-    }
-
-    updateSelectorsAndFilters();
-    renderList();
-</script>
-
-</body>
-</html>
+        .rating-masterpiece { color: #d4af37; text-shadow: 0 0 4px rgba(
